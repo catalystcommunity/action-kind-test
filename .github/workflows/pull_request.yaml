@@ -18,3 +18,16 @@ jobs:
           validateSingleCommit: true
         env:
           GITHUB_TOKEN: ${{ github.token }}
+  update-dependencies:
+    name: Update NPM Dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - uses: crazy-max/ghaction-dump-context@v1
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.AUTOMATION_PAT }}
+      - name: NPM Install # javascript actions must include the node_modules directory, this ensures it's consistent and always up to date
+        uses: bahmutov/npm-install@v1
+      - name: Commit Changes
+        uses: stefanzweifel/git-auto-commit-action@v4
