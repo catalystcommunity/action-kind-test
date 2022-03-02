@@ -40,20 +40,33 @@ Greet someone
 ### Example usage
 
 ```yaml
-on: [push]
-
+name: Pull Request
+on:
+  pull_request:
+    branches:
+      - main
 jobs:
-  hello_world_job:
+  test:
+    name: Test
+    if: github.event.pull_request.draft == false
     runs-on: ubuntu-latest
-    name: A job to say hello
+    env:
+      GIT_PAT: ${{ secrets.AUTOMATION_PAT }}
     steps:
-      - uses: actions/checkout@v2
-      - id: foo
-        uses: actions/hello-world-composite-action@v1
+      - name: Dump Context
+        uses: crazy-max/ghaction-dump-context@v1
+      - name: Run Tests
+        uses: swarm-io/action-kind-test@v1
         with:
-          who-to-greet: "Mona the Octocat"
-      - run: echo random-number ${{ steps.foo.outputs.random-number }}
-        shell: bash
+          token: ${{ secrets.AUTOMATION_PAT }}
+          ref: ${{ github.ref }}
+          project-id: ${{ secrets.GCLOUD_PROJECT_ID_PROD }}
+          credentials-json: ${{ secrets.GAR_WRITE_SERVICE_ACCOUNT_KEY }}
+          wait-for-ports: 8080,8081
+          dependencies: service-example-service
+          add-private-helm-repo: 'true'
+          helm-repo-username: ${{ secrets.AUTOMATION_PAT }}
+          helm-repo-password: ${{ secrets.AUTOMATION_PAT }}
 ```
 
 <!-- end examples -->
