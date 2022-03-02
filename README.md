@@ -56,7 +56,7 @@ jobs:
       - name: Dump Context
         uses: crazy-max/ghaction-dump-context@v1
       - name: Run Tests
-        uses: swarm-io/action-kind-test@v1
+        uses: catalystsquad/action-kind-test@v1
         with:
           token: ${{ secrets.AUTOMATION_PAT }}
           ref: ${{ github.ref }}
@@ -65,6 +65,7 @@ jobs:
           wait-for-ports: 8080,8081
           dependencies: service-example-service
           add-private-helm-repo: 'true'
+          helm-repo-name: your-repo-here
           helm-repo-username: ${{ secrets.AUTOMATION_PAT }}
           helm-repo-password: ${{ secrets.AUTOMATION_PAT }}
 ```
