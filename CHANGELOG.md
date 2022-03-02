@@ -1,3 +1,10 @@
+# 1.0.0 (2022-03-02)
+
+
+### Bug Fixes
+
+* Initial release ([#1](https://github.com/catalystsquad/action-kind-test/issues/1)) ([10b74ec](https://github.com/catalystsquad/action-kind-test/commit/10b74ec2795f0452c36e882df2cdae293aeb65a8))
+
 # 1.0.0 (2022-02-28)
 
 
