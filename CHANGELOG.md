@@ -1,3 +1,10 @@
+## [1.0.1](https://github.com/catalystsquad/action-kind-test/compare/v1.0.0...v1.0.1) (2022-03-03)
+
+
+### Bug Fixes
+
+* Use the right name for the action ([#2](https://github.com/catalystsquad/action-kind-test/issues/2)) ([e5dceb3](https://github.com/catalystsquad/action-kind-test/commit/e5dceb3602e09d430236d4d2e014c08a932e83c6))
+
 # 1.0.0 (2022-03-02)
 
 
