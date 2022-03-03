@@ -1,3 +1,10 @@
+## [1.0.2](https://github.com/catalystsquad/action-kind-test/compare/v1.0.1...v1.0.2) (2022-03-03)
+
+
+### Bug Fixes
+
+* Make use of gcloud credentials optional ([#3](https://github.com/catalystsquad/action-kind-test/issues/3)) ([e2cbf59](https://github.com/catalystsquad/action-kind-test/commit/e2cbf59c89041539506d8a9fa4d4ffb791200f8a))
+
 ## [1.0.1](https://github.com/catalystsquad/action-kind-test/compare/v1.0.0...v1.0.1) (2022-03-03)
 
 
