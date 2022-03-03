@@ -125,22 +125,28 @@ runs:
         helm repo add ${{ inputs.helm-repo-name}} ${{ inputs.helm-repo-url}} --username ${{ inputs.helm-repo-username }} --password ${{ inputs.helm-repo-password }}
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1.6.0
-    - uses: google-github-actions/auth@v0
-      with:
-        credentials_json: ${{ inputs.credentials-json }}
-    - id: auth
+    - if: inputs.credentials-json != ''
       uses: google-github-actions/auth@v0
       with:
         credentials_json: ${{ inputs.credentials-json }}
-    - name: Setup gcloud
+    - if: inputs.credentials-json != ''
+      uses: google-github-actions/auth@v0
+      with:
+        credentials_json: ${{ inputs.credentials-json }}
+    - if: inputs.credentials-json != ''
+      name: Setup gcloud
       uses: google-github-actions/setup-gcloud@v0.3.0
       with:
         project_id: ${{ inputs.project-id }}
-    - name: Prepare for skaffold and tests
+    - if: inputs.credentials-json != ''
+      name: Auth docker to gcloud
+      shell: bash
+      run: |
+        gcloud auth configure-docker ${{ inputs.region }}-docker.pkg.dev
+    - name: Setup private repo access and skafold logs
       shell: bash
       run: |
         git config --global url."https://${{ inputs.token }}@github.com".insteadOf "https://github.com"
-        gcloud auth configure-docker ${{ inputs.region }}-docker.pkg.dev
         mkdir ${GITHUB_WORKSPACE}/skaffold-logs
     - name: Create Kind cluster
       uses: engineerd/setup-kind@v0.5.0
