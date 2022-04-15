@@ -7,7 +7,7 @@ mkdir dependencies && cd dependencies
 
 for i in ${dependencies//,/ }
 do
-  git clone https://${GITHUB_TOKEN}@github.com/catalystsquad/${i}.git
+  git clone https://${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY_OWNER}/${i}.git
   cd $i
   echo "will log to ${GITHUB_WORKSPACE}/skaffold-logs/${i}.txt"
   echo "stuff" > ${GITHUB_WORKSPACE}/skaffold-logs/${i}.txt
