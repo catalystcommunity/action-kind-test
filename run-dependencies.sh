@@ -15,3 +15,4 @@ do
   echo "stuff" > ${GITHUB_WORKSPACE}/skaffold-logs/${i}.txt
   skaffold run --tail --port-forward=user --verbosity=info > ${GITHUB_WORKSPACE}/skaffold-logs/${i}.txt &
 done
+#
