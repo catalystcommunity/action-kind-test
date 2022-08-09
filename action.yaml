@@ -80,7 +80,7 @@ inputs:
     required: false
     default: ''
   fail-stern-commands:
-    description: 'Comma separated list, when tests fail these stern commands are run so you can see container logs'
+    description: 'Newline separated list, when tests fail these stern commands are run so you can see container logs'
     required: false
     default: ''
 runs:
