@@ -103,7 +103,10 @@ runs:
         echo "${GITHUB_WORKSPACE}/stern" >> $GITHUB_PATH
     - name: Test run stern commands
       shell: bash
-      run: ${{ github.action_path }}/run-stern-commands.sh "${{ inputs.fail-stern-commands }}"
+      run: |
+        echo "inputs.fail-stern-commands is"
+        echo "${{ inputs.fail-stern-commands }}"
+        ${{ github.action_path }}/run-stern-commands.sh ${{ inputs.fail-stern-commands }}
 #    - name: Setup Go
 #      if: hashFiles('app/go.mod') != '' # rudimentary file existence check
 #      uses: actions/setup-go@v2
