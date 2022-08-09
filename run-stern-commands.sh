@@ -2,9 +2,8 @@
 # split arg into array of strings split on a comma
 echo "received commands"
 echo "$1"
-IFS=',' read -ra COMMANDS <<< "$1"
-echo "IFS is"
-echo "IFS"
+IFS='\n' read -ra COMMANDS <<< "$1"
+echo "COMMANDS is $COMMANDS"
 # run commands, checking them against a regex to be sure they're actually stern commands
 for i in "${COMMANDS[@]}"; do
   if [[ "$i" =~ ^stern.* ]]; then
