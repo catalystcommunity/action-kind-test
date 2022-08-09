@@ -96,6 +96,11 @@ Creates a kind cluster, installs helm charts, runs an app via skaffold, and runs
     # Helm repository password
     # Default:
     helm-repo-password: ""
+
+    # Newline separated list, when tests fail these stern commands are run so you can
+    # see container logs
+    # Default:
+    fail-stern-commands: ""
 ```
 
 <!-- end usage -->
@@ -123,6 +128,7 @@ Creates a kind cluster, installs helm charts, runs an app via skaffold, and runs
 | **`helm-repo-url`**             | Helm repository url                                                                                                                                        | `https://raw.githubusercontent.com/${{ github.repository_owner }}/charts/main` |  **false**   |
 | **`helm-repo-username`**        | Helm repository username                                                                                                                                   |                                                                                |  **false**   |
 | **`helm-repo-password`**        | Helm repository password                                                                                                                                   |                                                                                |  **false**   |
+| **`fail-stern-commands`**       | Newline separated list, when tests fail these stern commands are run so you can see container logs                                                         |                                                                                |  **false**   |
 
 <!-- end inputs -->
 <!-- start outputs -->
