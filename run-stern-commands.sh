@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # split arg into array of strings separated by newlines
 commands=()
-readarray -t commands <<<$1
+readarray -t commands <<<"$1"
 # run commands, checking them against a regex to be sure they're actually stern commands
 for i in "${commands[@]}"; do
   if [[ "$i" =~ ^stern.* ]]; then
