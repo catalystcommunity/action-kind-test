@@ -97,15 +97,18 @@ runs:
       run: |
         mkdir ${GITHUB_WORKSPACE}/stern
         cd ${GITHUB_WORKSPACE}/stern
-        wget https://github.com/wercker/stern/releases/download/1.11.0/stern_linux_amd64
+        wget -q https://github.com/wercker/stern/releases/download/1.11.0/stern_linux_amd64
         mv stern_linux_amd64 stern
+        chmod +x stern
         export PATH=$PATH:${GITHUB_WORKSPACE}/stern
         echo $PATH
+        echo "testing stern"
         ${GITHUB_WORKSPACE}/stern -h
         stern -h
     - name: Test stern
       shell: bash
       run: |
+        echo "testing stern again"
         echo $PATH
         stern -h
     - name: Test run stern commands
