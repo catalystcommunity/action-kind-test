@@ -101,11 +101,6 @@ runs:
         mv stern_linux_amd64 stern
         chmod +x stern
         echo "${GITHUB_WORKSPACE}/stern" >> $GITHUB_PATH
-    - name: Test stern
-      shell: bash
-      run: |
-        echo "testing stern"
-        stern -h
     - name: Test run stern commands
       shell: bash
       run: ${{ github.action_path }}/run-commands.sh "${{ inputs.fail-stern-commands }}"
