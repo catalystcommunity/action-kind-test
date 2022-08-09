@@ -1,3 +1,10 @@
+## [1.0.4](https://github.com/catalystsquad/action-kind-test/compare/v1.0.3...v1.0.4) (2022-08-09)
+
+
+### Bug Fixes
+
+* Support running stern commands on failure to enable easier test troubleshooting ([#7](https://github.com/catalystsquad/action-kind-test/issues/7)) ([b8baafa](https://github.com/catalystsquad/action-kind-test/commit/b8baafa7e73dc28fc0c49e04d6597ef4ebb1a819))
+
 ## [1.0.3](https://github.com/catalystsquad/action-kind-test/compare/v1.0.2...v1.0.3) (2022-04-15)
 
 
