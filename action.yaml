@@ -79,6 +79,10 @@ inputs:
     description: 'Helm repository password'
     required: false
     default: ''
+  fail-stern-commands:
+    description: 'Comma separated list, when tests fail these stern commands are run so you can see container logs'
+    required: false
+    default: ''
 runs:
   using: "composite"
   steps:
@@ -88,6 +92,22 @@ runs:
         token: ${{ inputs.token }}
         ref: ${{ inputs.ref }}
         path: app
+    - name: Install stern
+      shell: bash
+      run: |
+        mkdir ${GITHUB_WORKSPACE}/stern
+        cd ${GITHUB_WORKSPACE}/stern
+        wget https://github.com/wercker/stern/releases/download/1.11.0/stern_linux_amd64
+        mv stern_linux_amd64 stern
+        export PATH=$PATH:${GITHUB_WORKSPACE}/stern
+    - name: Test stern
+      shell: bash
+      run: |
+        echo $PATH
+        stern -h
+    - name: Test run stern commands
+      shell: bash
+      run: ${{ github.action_path }}/run-commands.sh "${{ inputs.fail-stern-commands }}"
     - name: Setup Go
       if: hashFiles('app/go.mod') != '' # rudimentary file existence check
       uses: actions/setup-go@v2
@@ -191,3 +211,7 @@ runs:
           echo "logs for $i"
           cat $i
         done
+    - name: Run stern commands on failure
+      if: failure()
+      shell: bash
+      run: ${{ github.action_path }}/run-commands.sh "${{ inputs.fail-stern-commands }}"
