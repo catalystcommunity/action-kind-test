@@ -6,7 +6,7 @@ readarray -t commands <<<"$1"
 for i in "${commands[@]}"; do
   if [[ "$i" =~ ^stern.* ]]; then
     echo "Running stern command: $i"
-    # run with a timeout because stern will tail forever if you don't, so this will print logs for 10 seconds then exit
+    # run with a timeout because stern will tail forever if you don't, so this will print logs for 5 seconds then exit
     timeout 5 $i
   else
     # don't run arbitrary commands
