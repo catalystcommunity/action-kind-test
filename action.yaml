@@ -101,116 +101,110 @@ runs:
         mv stern_linux_amd64 stern
         chmod +x stern
         echo "${GITHUB_WORKSPACE}/stern" >> $GITHUB_PATH
-    - name: Test run stern commands
+    - name: Setup Go
+      if: hashFiles('app/go.mod') != '' # rudimentary file existence check
+      uses: actions/setup-go@v2
+      with:
+        go-version: '1.17.x'
+    - name: Setup Go Cache
+      if: hashFiles('app/go.mod') != '' # rudimentary file existence check
+      uses: actions/cache@v2
+      with:
+        # * Module download cache
+        # * Build cache (Linux)
+        path: |
+          ~/go/pkg/mod
+          ~/.cache/go-build
+        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          ${{ runner.os }}-go-
+    - name: Setup skaffold cache
+      uses: actions/cache@v2
+      with:
+        path: |
+          ~/.skaffold/cache
+        key: ${{ runner.os }}-skaffold-${{ hashFiles('**/skaffold.yaml') }}
+        restore-keys: |
+          ${{ runner.os }}-skaffold-
+    - name: Setup tools
+      uses: yokawasa/action-setup-kube-tools@v0.7.1
+      with:
+        helm: '3.7.2'
+        skaffold: '1.35.0'
+    - name: Add helm repository
+      if: inputs.add-private-helm-repo == 'true'
       shell: bash
       run: |
-        echo "inputs.fail-stern-commands is"
-        echo "${{ inputs.fail-stern-commands }}"
-        ${{ github.action_path }}/run-stern-commands.sh "${{ inputs.fail-stern-commands }}"
-#    - name: Setup Go
-#      if: hashFiles('app/go.mod') != '' # rudimentary file existence check
-#      uses: actions/setup-go@v2
-#      with:
-#        go-version: '1.17.x'
-#    - name: Setup Go Cache
-#      if: hashFiles('app/go.mod') != '' # rudimentary file existence check
-#      uses: actions/cache@v2
-#      with:
-#        # * Module download cache
-#        # * Build cache (Linux)
-#        path: |
-#          ~/go/pkg/mod
-#          ~/.cache/go-build
-#        key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
-#        restore-keys: |
-#          ${{ runner.os }}-go-
-#    - name: Setup skaffold cache
-#      uses: actions/cache@v2
-#      with:
-#        path: |
-#          ~/.skaffold/cache
-#        key: ${{ runner.os }}-skaffold-${{ hashFiles('**/skaffold.yaml') }}
-#        restore-keys: |
-#          ${{ runner.os }}-skaffold-
-#    - name: Setup tools
-#      uses: yokawasa/action-setup-kube-tools@v0.7.1
-#      with:
-#        helm: '3.7.2'
-#        skaffold: '1.35.0'
-#    - name: Add helm repository
-#      if: inputs.add-private-helm-repo == 'true'
-#      shell: bash
-#      run: |
-#        helm repo add ${{ inputs.helm-repo-name}} ${{ inputs.helm-repo-url}} --username ${{ inputs.helm-repo-username }} --password ${{ inputs.helm-repo-password }}
-#    - name: Set up Docker Buildx
-#      uses: docker/setup-buildx-action@v1.6.0
-#    - if: inputs.credentials-json != ''
-#      uses: google-github-actions/auth@v0
-#      with:
-#        credentials_json: ${{ inputs.credentials-json }}
-#    - if: inputs.credentials-json != ''
-#      uses: google-github-actions/auth@v0
-#      with:
-#        credentials_json: ${{ inputs.credentials-json }}
-#    - if: inputs.credentials-json != ''
-#      name: Setup gcloud
-#      uses: google-github-actions/setup-gcloud@v0.3.0
-#      with:
-#        project_id: ${{ inputs.project-id }}
-#    - if: inputs.credentials-json != ''
-#      name: Auth docker to gcloud
-#      shell: bash
-#      run: |
-#        gcloud auth configure-docker ${{ inputs.region }}-docker.pkg.dev
-#    - name: Setup private repo access and skafold logs
-#      shell: bash
-#      run: |
-#        git config --global url."https://${{ inputs.token }}@github.com".insteadOf "https://github.com"
-#        mkdir ${GITHUB_WORKSPACE}/skaffold-logs
-#    - name: Create Kind cluster
-#      uses: engineerd/setup-kind@v0.5.0
-#      with:
-#        version: "v0.11.1"
-#    - name: Run Dependencies
-#      if: inputs.dependencies != ''
-#      env:
-#        GITHUB_TOKEN: ${{ inputs.token }}
-#        HELM_EXPERIMENTAL_OCI: 1
-#      shell: bash
-#      run: ${{ github.action_path }}/run-dependencies.sh ${{ inputs.dependencies }}
-#    - name: Run app via skaffold
-#      env:
-#        SKAFFOLD_ACTIONS: true
-#        HELM_EXPERIMENTAL_OCI: 1
-#      shell: bash
-#      working-directory: app
-#      run: |
-#        skaffold run --tail --port-forward=user --verbosity=info > ${GITHUB_WORKSPACE}/skaffold-logs/app.txt &
-#    - name: Wait for ready
-#      if: inputs.wait-for-ports != ''
-#      uses: catalystsquad/action-wait-for-ports@v1
-#      with:
-#        ports: ${{ inputs.wait-for-ports }}
-#        max-wait: ${{ inputs.max-wait }}
-#        check-interval: ${{ inputs.check-interval }}
-#    - name: Run tests
-#      shell: bash
-#      working-directory: app/${{ inputs.test-working-directory }}
-#      run: |
-#        sleep ${{ inputs.sleep }}
-#        ${{ inputs.test-command }}
-#    - name: Report status on failure
-#      if: failure()
-#      shell: bash
-#      run: |
-#        kubectl get all --all-namespaces
-#        kubectl describe pods --all-namespaces
-#        for i in ${GITHUB_WORKSPACE}/skaffold-logs/*.txt
-#        do
-#          echo "logs for $i"
-#          cat $i
-#        done
-#    - name: Run stern commands on failure
-#      if: failure()
-#      shell: bash
-#      run: ${{ github.action_path }}/run-commands.sh "${{ inputs.fail-stern-commands }}"
+        helm repo add ${{ inputs.helm-repo-name}} ${{ inputs.helm-repo-url}} --username ${{ inputs.helm-repo-username }} --password ${{ inputs.helm-repo-password }}
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1.6.0
+    - if: inputs.credentials-json != ''
+      uses: google-github-actions/auth@v0
+      with:
+        credentials_json: ${{ inputs.credentials-json }}
+    - if: inputs.credentials-json != ''
+      uses: google-github-actions/auth@v0
+      with:
+        credentials_json: ${{ inputs.credentials-json }}
+    - if: inputs.credentials-json != ''
+      name: Setup gcloud
+      uses: google-github-actions/setup-gcloud@v0.3.0
+      with:
+        project_id: ${{ inputs.project-id }}
+    - if: inputs.credentials-json != ''
+      name: Auth docker to gcloud
+      shell: bash
+      run: |
+        gcloud auth configure-docker ${{ inputs.region }}-docker.pkg.dev
+    - name: Setup private repo access and skafold logs
+      shell: bash
+      run: |
+        git config --global url."https://${{ inputs.token }}@github.com".insteadOf "https://github.com"
+        mkdir ${GITHUB_WORKSPACE}/skaffold-logs
+    - name: Create Kind cluster
+      uses: engineerd/setup-kind@v0.5.0
+      with:
+        version: "v0.11.1"
+    - name: Run Dependencies
+      if: inputs.dependencies != ''
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+        HELM_EXPERIMENTAL_OCI: 1
+      shell: bash
+      run: ${{ github.action_path }}/run-dependencies.sh ${{ inputs.dependencies }}
+    - name: Run app via skaffold
+      env:
+        SKAFFOLD_ACTIONS: true
+        HELM_EXPERIMENTAL_OCI: 1
+      shell: bash
+      working-directory: app
+      run: |
+        skaffold run --tail --port-forward=user --verbosity=info > ${GITHUB_WORKSPACE}/skaffold-logs/app.txt &
+    - name: Wait for ready
+      if: inputs.wait-for-ports != ''
+      uses: catalystsquad/action-wait-for-ports@v1
+      with:
+        ports: ${{ inputs.wait-for-ports }}
+        max-wait: ${{ inputs.max-wait }}
+        check-interval: ${{ inputs.check-interval }}
+    - name: Run tests
+      shell: bash
+      working-directory: app/${{ inputs.test-working-directory }}
+      run: |
+        sleep ${{ inputs.sleep }}
+        ${{ inputs.test-command }}
+    - name: Report status on failure
+      if: failure()
+      shell: bash
+      run: |
+        kubectl get all --all-namespaces
+        kubectl describe pods --all-namespaces
+        for i in ${GITHUB_WORKSPACE}/skaffold-logs/*.txt
+        do
+          echo "logs for $i"
+          cat $i
+        done
+    - name: Run stern commands on failure
+      if: failure()
+      shell: bash
+      run: ${{ github.action_path }}/run-stern-commands.sh "${{ inputs.fail-stern-commands }}"
