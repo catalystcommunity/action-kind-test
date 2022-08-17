@@ -83,6 +83,14 @@ inputs:
     description: 'Newline separated list, when tests fail these stern commands are run so you can see container logs'
     required: false
     default: ''
+  fail-kubectl-commands:
+    description: 'Newline separated list, when tests fail these kubectl commands are run. Use to see pod status, etc.'
+    required: false
+    default: ''
+  fail-skaffold-logs:
+    description: 'Set to true to print skaffold build logs on failure'
+    required: false
+    default: false
 runs:
   using: "composite"
   steps:
@@ -194,11 +202,9 @@ runs:
         sleep ${{ inputs.sleep }}
         ${{ inputs.test-command }}
     - name: Report status on failure
-      if: failure()
+      if: failure() && ${{ inputs.fail-skaffold-logs }}
       shell: bash
       run: |
-        kubectl get all --all-namespaces
-        kubectl describe pods --all-namespaces
         for i in ${GITHUB_WORKSPACE}/skaffold-logs/*.txt
         do
           echo "logs for $i"
@@ -208,3 +214,7 @@ runs:
       if: failure()
       shell: bash
       run: ${{ github.action_path }}/run-stern-commands.sh "${{ inputs.fail-stern-commands }}"
+    - name: Run kubectl commands on failure
+      if: failure()
+      shell: bash
+      run: ${{ github.action_path }}/run-kubectl-commands.sh "${{ inputs.fail-kubectl-commands }}"
