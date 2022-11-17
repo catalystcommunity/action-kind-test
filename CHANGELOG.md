@@ -1,3 +1,10 @@
+## [1.0.6](https://github.com/catalystsquad/action-kind-test/compare/v1.0.5...v1.0.6) (2022-11-17)
+
+
+### Bug Fixes
+
+* remove unnecessary commands that are failing ([#11](https://github.com/catalystsquad/action-kind-test/issues/11)) ([d425ae9](https://github.com/catalystsquad/action-kind-test/commit/d425ae9f09db63702a7b8dc865efec3a01456b4d))
+
 ## [1.0.5](https://github.com/catalystsquad/action-kind-test/compare/v1.0.4...v1.0.5) (2022-11-17)
 
 
