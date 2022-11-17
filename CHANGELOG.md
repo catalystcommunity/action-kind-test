@@ -1,3 +1,11 @@
+## [1.0.5](https://github.com/catalystsquad/action-kind-test/compare/v1.0.4...v1.0.5) (2022-11-17)
+
+
+### Bug Fixes
+
+* bump @actions/core from 1.6.0 to 1.9.1 ([#8](https://github.com/catalystsquad/action-kind-test/issues/8)) ([2ba20c1](https://github.com/catalystsquad/action-kind-test/commit/2ba20c18e253e53c37f6b29b5230353e54cc397f))
+* stern install ([#10](https://github.com/catalystsquad/action-kind-test/issues/10)) ([4a8e6c6](https://github.com/catalystsquad/action-kind-test/commit/4a8e6c6bde38a8e585ed6f780aad5f315958896f))
+
 ## [1.0.4](https://github.com/catalystsquad/action-kind-test/compare/v1.0.3...v1.0.4) (2022-08-09)
 
 
