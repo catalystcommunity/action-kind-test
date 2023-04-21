@@ -83,6 +83,10 @@ inputs:
     description: 'Newline separated list, when tests fail these stern commands are run so you can see container logs'
     required: false
     default: ''
+  go-version:
+    description: 'Go version to use'
+    required: false
+    default: '1.20.x'
 runs:
   using: "composite"
   steps:
@@ -105,7 +109,7 @@ runs:
       if: hashFiles('app/go.mod') != '' # rudimentary file existence check
       uses: actions/setup-go@v2
       with:
-        go-version: '1.17.x'
+        go-version: ${{ inputs.go-version }}
     - name: Setup Go Cache
       if: hashFiles('app/go.mod') != '' # rudimentary file existence check
       uses: actions/cache@v2
