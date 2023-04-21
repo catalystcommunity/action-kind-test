@@ -1,3 +1,10 @@
+## [1.0.7](https://github.com/catalystsquad/action-kind-test/compare/v1.0.6...v1.0.7) (2023-04-21)
+
+
+### Bug Fixes
+
+* Make go version configurable ([#12](https://github.com/catalystsquad/action-kind-test/issues/12)) ([9757808](https://github.com/catalystsquad/action-kind-test/commit/97578081d5f1bd2658c29bfd91359dc5cc9b489c))
+
 ## [1.0.6](https://github.com/catalystsquad/action-kind-test/compare/v1.0.5...v1.0.6) (2022-11-17)
 
 
