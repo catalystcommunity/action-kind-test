@@ -101,6 +101,10 @@ Creates a kind cluster, installs helm charts, runs an app via skaffold, and runs
     # see container logs
     # Default:
     fail-stern-commands: ""
+
+    # Go version to use
+    # Default: 1.20.x
+    go-version: ""
 ```
 
 <!-- end usage -->
@@ -129,6 +133,7 @@ Creates a kind cluster, installs helm charts, runs an app via skaffold, and runs
 | **`helm-repo-username`**        | Helm repository username                                                                                                                                   |                                                                                |  **false**   |
 | **`helm-repo-password`**        | Helm repository password                                                                                                                                   |                                                                                |  **false**   |
 | **`fail-stern-commands`**       | Newline separated list, when tests fail these stern commands are run so you can see container logs                                                         |                                                                                |  **false**   |
+| **`go-version`**                | Go version to use                                                                                                                                          |                                    `1.20.x`                                    |  **false**   |
 
 <!-- end inputs -->
 <!-- start outputs -->
