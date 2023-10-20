@@ -1,6 +1,10 @@
 name: 'Kind Test'
 description: 'Creates a kind cluster, installs helm charts, runs an app via skaffold, and runs tests'
 inputs:
+  skaffold-working-directory:
+    description: 'Working directory to run skaffold from. Defaults to empty for root directory'
+    required: false
+    default: ''
   token:
     description: 'Github token, if there are dependencies, this should be a PAT so that the other repos can be cloned'
     required: false
@@ -106,12 +110,12 @@ runs:
         rm stern_1.22.0_linux_amd64.tar.gz LICENSE
         echo "${GITHUB_WORKSPACE}/stern" >> $GITHUB_PATH
     - name: Setup Go
-      if: hashFiles('app/go.mod') != '' # rudimentary file existence check
+      if: hashFiles('**/go.mod') != '' # rudimentary file existence check
       uses: actions/setup-go@v2
       with:
         go-version: ${{ inputs.go-version }}
     - name: Setup Go Cache
-      if: hashFiles('app/go.mod') != '' # rudimentary file existence check
+      if: hashFiles('**/go.mod') != '' # rudimentary file existence check
       uses: actions/cache@v2
       with:
         # * Module download cache
@@ -181,7 +185,7 @@ runs:
         SKAFFOLD_ACTIONS: true
         HELM_EXPERIMENTAL_OCI: 1
       shell: bash
-      working-directory: app
+      working-directory: app/${{ inputs.skaffold-working-directory }}
       run: |
         skaffold run --tail --port-forward=user --verbosity=info > ${GITHUB_WORKSPACE}/skaffold-logs/app.txt &
     - name: Wait for ready
@@ -193,7 +197,7 @@ runs:
         check-interval: ${{ inputs.check-interval }}
     - name: Run tests
       shell: bash
-      working-directory: app/${{ inputs.test-working-directory }}
+      working-directory: app/${{ inputs.skaffold-working-directory }}/${{ inputs.test-working-directory }}
       run: |
         sleep ${{ inputs.sleep }}
         ${{ inputs.test-command }}
