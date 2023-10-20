@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/catalystsquad/action-kind-test/compare/v1.0.7...v1.1.0) (2023-10-20)
+
+
+### Features
+
+* allow for running skaffold in a sub directory ([#13](https://github.com/catalystsquad/action-kind-test/issues/13)) ([40a0c65](https://github.com/catalystsquad/action-kind-test/commit/40a0c6563e56553b85ca0712a62da2b181a8acdc))
+
 ## [1.0.7](https://github.com/catalystsquad/action-kind-test/compare/v1.0.6...v1.0.7) (2023-04-21)
 
 
