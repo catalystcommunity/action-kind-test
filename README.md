@@ -13,7 +13,7 @@ Creates a kind cluster, installs helm charts, runs an app via skaffold, and runs
 <!-- start usage -->
 
 ```yaml
-- uses: catalystsquad/action-kind-test@undefined
+- uses: catalystcommunity/action-kind-test@undefined
   with:
     # Working directory to run skaffold from. Defaults to empty for root directory
     # Default:
@@ -169,7 +169,7 @@ jobs:
       - name: Dump Context
         uses: crazy-max/ghaction-dump-context@v1
       - name: Run Tests
-        uses: catalystsquad/action-kind-test@v1
+        uses: catalystcommunity/action-kind-test@v1
         with:
           token: ${{ secrets.AUTOMATION_PAT }}
           ref: ${{ github.ref }}

@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/catalystsquad/action-kind-test.git"
+    "url": "git+https://github.com/catalystcommunity/action-kind-test.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/catalystsquad/action-kind-test/issues"
+    "url": "https://github.com/catalystcommunity/action-kind-test/issues"
   },
-  "homepage": "https://github.com/catalystsquad/action-kind-test#readme",
+  "homepage": "https://github.com/catalystcommunity/action-kind-test#readme",
   "dependencies": {
     "@actions/core": "^1.9.1",
     "js-yaml": "^4.1.0",
