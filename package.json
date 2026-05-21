@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/catalystcommunity/action-kind-test#readme",
   "dependencies": {
-    "@actions/core": "^1.9.1",
+    "@actions/core": "^1.11.1",
     "js-yaml": "^4.1.0",
     "minimist": "^1.2.6"
   }
